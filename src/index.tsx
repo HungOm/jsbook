@@ -1,16 +1,18 @@
 import * as esbuild from 'esbuild-wasm'
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
 import ReactDom from 'react-dom';
+import {unpkgPathPlugin} from './plugin/unpkg-path-plugin';
 
 const App = ()=>{
+    const ref = useRef<any>()
     const [input ,setInput]=useState('');
     const [code,setCode]= useState('');
     const startService = async()=>{
-        const service = await esbuild.startService({
+        ref.current = await esbuild.startService({
             worker:true,
             wasmURL:'/esbuild.wasm'
         })
-        console.log(service)
+        // console.log(service)
     }
 
     useEffect(()=>{
@@ -19,8 +21,22 @@ const App = ()=>{
 
 
 
-    const onClick = ()=>{
+    const onClick =async ()=>{
         // console.log(input);
+        if(!ref.current){
+            return;
+        }
+    //    const result =  await ref.current.transform(input,{
+    //         loader:'jsx',
+    //         target:'es2015'
+    //     });
+    const result = await ref.current.build({
+        entryPoints:['index.js'],
+        bundle:true,
+        write:false,
+        plugins:[unpkgPathPlugin()]
+    })
+        setCode(result.outputFiles[0].text);
  
     }
     return <div>
@@ -28,10 +44,14 @@ const App = ()=>{
         <div>
             <button onClick={onClick}>Submit</button>
         </div>
-    </div>;
-    <pre>
+        <pre>
 
-    </pre>
+{code}
+
+
+</pre>
+    </div>;
+
 };
 
 ReactDom.render(<App/>,document.querySelector('#root'));
