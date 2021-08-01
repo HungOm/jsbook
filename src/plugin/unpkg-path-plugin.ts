@@ -53,7 +53,7 @@ export const unpkgPathPlugin = () => {
           return {
             loader: 'jsx',
             contents: `
-              import React from 'react';
+              import React,{useState} from 'react-select';
               console.log(React)
             `,
           };
@@ -61,7 +61,7 @@ export const unpkgPathPlugin = () => {
 
         //check to see if we have already fetched this file 
         // and if it is in the cache 
-        const cacheResult = await fileCache.getItem(args.path);
+        const cacheResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
         // if it is , return it immediately 
         if(cacheResult){
           return cacheResult;
@@ -69,7 +69,7 @@ export const unpkgPathPlugin = () => {
 
         const {data,request} = await axios.get(args.path);
         //store response in cache
-        const result =  {
+        const result:esbuild.OnLoadResult =  {
           loader:'jsx',
           contents:data,
           resolveDir: new URL('./', request.responseURL).pathname
