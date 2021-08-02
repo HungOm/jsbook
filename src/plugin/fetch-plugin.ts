@@ -22,6 +22,17 @@ export const fetchPlugin = (inputCode: string)=>{
 
       });
 
+    build.onLoad({filter:/.*/},async(args:any)=>{
+         //check to see if we have already fetched this file 
+        // and if it is in the cache 
+        const cacheResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
+        // if it is , return it immediately 
+        if(cacheResult){
+          return cacheResult;
+        }
+
+    })
+
       build.onLoad({filter:/.css$/},async(args:any)=>{
         
         //check to see if we have already fetched this file 
@@ -55,14 +66,6 @@ export const fetchPlugin = (inputCode: string)=>{
       });
              
       build.onLoad({ filter: /.*/ }, async (args: any) => { 
-        
-        //check to see if we have already fetched this file 
-        // and if it is in the cache 
-        const cacheResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
-        // if it is , return it immediately 
-        if(cacheResult){
-          return cacheResult;
-        }
         const {data,request} = await axios.get(args.path);
  
         //store response in cache
