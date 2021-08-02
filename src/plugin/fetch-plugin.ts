@@ -24,13 +24,13 @@ export const fetchPlugin = (inputCode: string)=>{
 
       build.onLoad({filter:/.css$/},async(args:any)=>{
         
-        // //check to see if we have already fetched this file 
-        // // and if it is in the cache 
-        // const cacheResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
-        // // if it is , return it immediately 
-        // if(cacheResult){
-        //   return cacheResult;
-        // }
+        //check to see if we have already fetched this file 
+        // and if it is in the cache 
+        const cacheResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
+        // if it is , return it immediately 
+        if(cacheResult){
+          return cacheResult;
+        }
         const {data,request} = await axios.get(args.path);
         // check if the user input is js or css and add to loader
         const escaped = data
