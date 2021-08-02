@@ -28,12 +28,23 @@ export const fetchPlugin = (inputCode: string)=>{
         if(cacheResult){
           return cacheResult;
         }
-
         const {data,request} = await axios.get(args.path);
+        // check if the user input is js or css and add to loader
+        const fileType = args.path.match(/.css$/) ? 'css' : 'jsx';
+        const escaped = data
+          .replace(/\n/g,'')
+          .replace(/"/g,'\\"')
+          .replace(/'/g,"\\'")
+        const contents =
+        fileType === 'css'?
+          `const style = document.createElement('style');
+           style.innerText = '${escaped}';
+           document.head.appendChild(style);
+          `: data;
         //store response in cache
         const result:esbuild.OnLoadResult =  {
           loader:'jsx',
-          contents:data,
+          contents,
           resolveDir: new URL('./', request.responseURL).pathname
         }
 
