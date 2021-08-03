@@ -1,8 +1,12 @@
 import './code-editor.css';
+import './syntax.css';
 import {useRef} from 'react';
 import MonacoEditor,{EditorDidMount} from '@monaco-editor/react';
 import prettier from 'prettier';
-import parser from 'prettier/parser-babel'
+import parser from 'prettier/parser-babel';
+import codeShift from 'jscodeshift';
+import Highlighter from 'monaco-jsx-highlighter';
+
 
 interface CodeEditorProps{
     initialValue:string;
@@ -22,6 +26,22 @@ const CodeEditor:React.FC<CodeEditorProps> = ({onChange,initialValue}) =>{
         });
 
         MonacoEditor.getModel()?.updateOptions({tabSize:2})
+        const highlighter = new Highlighter(
+            // this line will ignore typecheck on the line that follows 
+            //@ts-ignore
+            window.monaco, //accessing monaco object
+            codeShift,
+            MonacoEditor
+
+        );
+        highlighter.highLightOnDidChangeModelContent(
+            // empty fuction to stop console.log() mess 
+
+            ()=>{},
+            ()=>{},
+            undefined,
+            ()=>{}
+        );
     }
     const onFormatClick=()=>{
     //get current value from editor
