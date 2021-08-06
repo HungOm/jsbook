@@ -84,7 +84,7 @@ const CodeEditor:React.FC<CodeEditorProps> = ({onChange,initialValue}) =>{
         fontSize:16,
         scrollBeyondLastLine:false,
         automaticLayout:true
-    }}/>;
+    }}/>
 
     </div>)
 };
