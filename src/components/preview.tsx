@@ -7,6 +7,7 @@ interface PreviewProps{
 
 const html = `
 <html>
+ <style>html{background-color:white;}</style>
   <head></head>
   <body>
     <div id="root"></div>
