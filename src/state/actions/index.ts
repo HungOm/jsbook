@@ -1,6 +1,7 @@
 // import { Action } from "redux";
 import { ActionType } from "../action-types";
 import {CellType} from '../cell';
+
 export type directon='up'|'down'
 
 export interface MoveCellAction {
