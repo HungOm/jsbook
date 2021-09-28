@@ -1,1 +1,2 @@
-export const M = "a";
+export * from './store';
+export * from './reducers';
