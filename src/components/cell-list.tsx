@@ -12,7 +12,11 @@ const CellList: React.FC = () => {
     ));
     return <div>
         {renderedCells}
+        <div className={cells.length===0?'forced-visible':''}>
         <AddCell nextCellId={null} />
+
+
+        </div>
     </div>
 };
 export default CellList;
