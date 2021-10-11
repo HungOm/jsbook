@@ -1,8 +1,8 @@
 // import { Action } from "redux";
 import { ActionType } from "../action-types";
-import {CellType} from '../cell';
+import { CellType } from '../cell';
 
-export type directon='up'|'down'
+export type directon = 'up' | 'down'
 
 export interface MoveCellAction {
     type: ActionType.MOVE_CELL;
@@ -23,7 +23,7 @@ export interface DeleteCellAction {
 export interface InsertCellAfterAction {
     type: ActionType.INSERT_CELL_AFTER;
     payload: {
-        id: string|null;
+        id: string | null;
         type: CellType;
     }
 
@@ -37,13 +37,31 @@ export interface UpdateCellAction {
     }
 
 }
+export interface BundleStartAction {
+    type: ActionType.BUNDLE_START,
+    payload: {
+        cellId: string;
+    }
 
+}
+export interface BundleCompleteAction {
+    type: ActionType.BUNDLE_COMPLETE,
+    payload: {
+        cellId: string;
+        bundle: {
+            code: string;
+            err: string
+        };
+    };
+}
 
 
 export type Action =
     | MoveCellAction
     | DeleteCellAction
     | InsertCellAfterAction
-    | UpdateCellAction;
+    | UpdateCellAction
+    | BundleStartAction
+    | BundleCompleteAction;
 
 
