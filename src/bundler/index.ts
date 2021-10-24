@@ -24,7 +24,7 @@ export default async (rawCode: string) => {
             code: result.outputFiles[0].text,
             err: ''
         }
-    } catch (err) {
+    } catch (err:any) {
         return {
             code: '',
             err: err.message
